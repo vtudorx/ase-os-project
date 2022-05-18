@@ -83,6 +83,16 @@ networks:
 EOF
 }
 
+### This script should be run as root ###
+# IF Effective User ID = 0 => then root
+echo "Checking root permissions..."
+sleep 1
+if (($EUID == 0)); then
+    echo "Root permissions OK!"
+else
+    echo "Run script as root!"
+    exit
+fi
 #### BEGIN INTERACTION #####
 echo "$title"
 # use promt shell 3 to capture user selected option
