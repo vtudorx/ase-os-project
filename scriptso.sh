@@ -19,6 +19,7 @@ GetDockerContainersList() {
 }
 
 CreatingDockerComposeFile() {
+    $(touch $1/docker-compose.yml)
     cat > $1/docker-compose.yml << EOF
 version: "3.8"
 services:
@@ -220,7 +221,6 @@ EOF
         sleep 1
         echo "### Starting creating configuration"
         sleep 1
-        $(touch file.yml)
         # Starting creating docker-compose yml file configuration
         CreatingDockerComposeFile $applicationPath
         if [ $shouldDatabaseServiceBeInstalled -eq 1 ]; then
