@@ -106,23 +106,34 @@ do
         userManualLocation="readme.txt"
         # check for a regular file only
         if [ -f $userManualLocation ]
-            then echo "$(cat readme.txt)"
+            then echo "$(cat README.md)"
             else echo "Unable to locate user manual."
         fi
         ;;
+### ---- NEXT OPTION --------------------------------------------------------------------------###
         "Secure password generator")
         echo "Let's do some magic and generate an unique password"
-        alphabet=("A" "B" "C" "D" "E" "F" "G")
-        specialChars=("#" "%" "&" "^", "!")
-        numericChars=(1 2 3 4 5 6 7 8 9 0)
-        minPasswordLength=6
-        minSpecialChars=2
-        minNumericChars=2
-        passwordGenerated=""
-        for char in ${alphabet[@]}
+        # brace expansion and combinatorialial combination
+        alphabet=({a..z} {A..Z} {m..n})
+        numericChars=({1..9} {2..9} {3..9})
+        intermediaryString=(${alphabet[*]} ${numericChars[*]})
+        #variable for storing password
+        password=""
+        iterationNo=1
+        defaultPasswordLength=16
+        while [ $iterationNo -le $defaultPasswordLength ]
         do
-            echo "$(( $RANDOM % ${#alphabet[@]} + 1 ))"
-        done 
+          index=$(($RANDOM % ${#intermediaryString[*]}))
+          charExtracted=${intermediaryString[$index]}
+          password=${password}${charExtracted}
+          (( iterationNo++ ))
+        done
+        sleep 1
+        echo ""
+        echo "### your secure password"
+        echo ""
+        echo $password
+        echo ""
         ;;
 ### ---- NEXT OPTION --------------------------------------------------------------------------###
         "Check docker version")
